@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <math.h>
 #include <stdexcept>
@@ -6,7 +5,7 @@
 #include <string>
 #include <math.h>
 
-#include "LoanCalculator.h"
+#include "Loan.h"
 
 using namespace std;
 
@@ -21,7 +20,6 @@ LoanCalculator::LoanCalculator() :
   openingPercent_(0.0)
 {
 }
-
 //
 // The actual calculation methods
 //
@@ -30,7 +28,7 @@ LoanCalculator::LoanCalculator() :
  * Loan balance after n payments have been made:
  *   B_n = A*(1+i)^n - (P/i)*((1+i)^n - 1)
  */
-float LoanCalculator::calculateLoanBalance()
+long double LoanCalculator::calculateLoanBalance()
 {
   if(!amountSet_ || !interestSet_ || !periodElapsedSet_ || !paymentSet_)
   {
@@ -45,14 +43,14 @@ float LoanCalculator::calculateLoanBalance()
  * Payment amount on a loan:
  *   P = i*A / (1 - (1+i)^-N)
  */
-float LoanCalculator::calculatePayment()
+long double LoanCalculator::calculatePayment()
 {
   if(!amountSet_ || !interestSet_ || !periodTotalSet_)
   {
     throw invalid_argument("Must set loan amount, interest, and total period for this calculation" );
   }
 
-  float totalAmount = amount_ - initialPayment_;
+  long double totalAmount = amount_ - initialPayment_;
   totalAmount = totalAmount + openingFee_ + (totalAmount * (openingPercent_/100.0));
 
   return (interestPeriodic_*totalAmount) /
@@ -67,7 +65,7 @@ float LoanCalculator::calculatePayment()
  *      If you pay her back $100 a month, how long will it take?
  *      Solution:  6% per year is 0.5% per month, or 0.005. P = 100 and A = 3500. N = 38.57
  */
-float LoanCalculator::calculateNumberPayments()
+long double LoanCalculator::calculateNumberPayments()
 {
   if(!amountSet_ || !interestSet_ || !paymentSet_)
   {
@@ -82,7 +80,7 @@ float LoanCalculator::calculateNumberPayments()
  * Original loan amount:
  *   A = (P/i)*(1 - (1+i)^-N)
  */
-float LoanCalculator::calculateLoanAmount()
+long double LoanCalculator::calculateLoanAmount()
 {
   if(!paymentSet_ || !interestSet_ || !periodTotalSet_)
   {
@@ -98,7 +96,7 @@ float LoanCalculator::calculateLoanAmount()
  *   i = (((1 + P/A)^(1/q) - 1 )^q - 1)  NOTICE: This is an approximate not an exact solution
  *   where q = log(1+1/N) / log(2)
 */
-float LoanCalculator::calculateInterestRate()
+long double LoanCalculator::calculateInterestRate()
 {
   if(!amountSet_ || !paymentSet_ || !periodTotalSet_)
   {
@@ -106,23 +104,23 @@ float LoanCalculator::calculateInterestRate()
   }
 
   float q = log10(1.0 + 1.0/periodTotal_) / log10(2.0);
-  float monthlyInterest = pow((pow((1.0 + payment_/amount_), 1.0/q) -1.0), q) -1.0;
+  long double monthlyInterest = pow((pow((1.0 + payment_/amount_), 1.0/q) -1.0), q) -1.0;
 
   return monthlyInterest*12*100;
 }
 
-float LoanCalculator::calculateEffectiveInterestRate()
+long double LoanCalculator::calculateEffectiveInterestRate()
 {
   if(!amountSet_ || !periodTotalSet_)
   {
     throw invalid_argument("Must set amount and total period for this calculation" );
   }
 
-  float payment = calculatePayment();
-  float totalAmount = amount_ - initialPayment_;
+  long double payment = calculatePayment();
+  long double totalAmount = amount_ - initialPayment_;
 
   float q = log10(1.0 + 1.0/periodTotal_) / log10(2.0);
-  float monthlyInterest = pow((pow((1.0 + payment/totalAmount), 1.0/q) -1.0), q) -1.0;
+  long double monthlyInterest = pow((pow((1.0 + payment/totalAmount), 1.0/q) -1.0), q) -1.0;
 
   return monthlyInterest*12*100;
 }

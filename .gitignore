@@ -1,8 +1,7 @@
-*.[oa]
-*~
-*.mk
+#Build Artifacts
+*.o
+*.exe
+calc
+dist/
 build/
-nbproject/
-.sconsign.dblite
-loanCalculator
-moc*.cc
+.vscode/

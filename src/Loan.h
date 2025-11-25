@@ -94,9 +94,9 @@ public:
     amountSet_ = interestSet_ = paymentSet_ = periodTotalSet_ = periodElapsedSet_ = false;
   }
 
-  //
-  // The actual calculation methods
-  //
+/**
+ * @brief Changed float to long double to handle overflow
+ */
 
   long double calculateLoanBalance();
   long double calculatePayment();
@@ -111,7 +111,7 @@ private:
   long double amount_;
   bool amountSet_;
 
-  long double initialPayment_;          //Changed float to long double for better accuracy
+  long double initialPayment_;
 
   long double interest_;
   long double interestPeriodic_;
@@ -120,7 +120,10 @@ private:
   long double payment_;
   bool paymentSet_;
 
-  int periodTotal_;                   //The period doesn’t need a large range.
+  /**
+ * @brief Here, we didn't change datatype becuse period doesn't require large range
+ */
+  int periodTotal_;
   bool periodTotalSet_;
 
   int periodElapsed_;

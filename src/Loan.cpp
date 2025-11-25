@@ -177,3 +177,8 @@ std::string LoanCalculator::toString()
 
   return ss.str();
 }
+
+
+/**
+ * @author Ghulam Muhammad
+ */

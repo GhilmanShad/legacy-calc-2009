@@ -1,8 +1,11 @@
 #include <iostream>
 #include <string>
-#include <cstdlib> // for atof/atoi
-#include "Loan.h"  // We assume your file is named Loan.h
+#include <cstdlib> 
+#include "Loan.h"
 
+/**
+ * @brief Removed GUI Library and made the App completely console-based
+ */
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -15,7 +18,6 @@ int main(int argc, char* argv[]) {
     bool inputsProvided = false;
 
     // 2. Parse Command Line Arguments
-    // Example usage: ./calc -a 100000 -i 6.5 -n 360
     for (int i = 1; i < argc; i++) {
         string arg = argv[i];
 
@@ -26,7 +28,7 @@ int main(int argc, char* argv[]) {
         } 
         else if (arg == "-i" && i + 1 < argc) {
             rate = std::stold(argv[++i]);
-            loan.setInterest(rate); // Your header says this takes annual % (e.g. 6.75)
+            loan.setInterest(rate);
         } 
         else if (arg == "-n" && i + 1 < argc) {
             months = std::stoi(argv[++i]);
@@ -55,8 +57,10 @@ int main(int argc, char* argv[]) {
     cout << "Monthly EMI: " << monthlyPayment << endl;
     cout << "-----------------------------------" << endl;
 
-    // Optional: If you implemented toString() in Loan.cpp, you can uncomment this:
-    // cout << loan.toString() << endl;
-
     return 0;
 }
+
+
+/**
+ * @author Ghulam Muhammad
+ */

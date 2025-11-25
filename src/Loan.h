@@ -29,13 +29,13 @@ Interest Rate:
 
 
 Variables:
-A   	the loan amount (the principal sum) or initial investment
-B_n or Bn   	(pronounced B sub n) the balance after n payments have been made. After the last payment has been made, B_N is zero.)
-i   	the interest rate per period, not per year
+A    the loan amount (the principal sum) or initial investment
+B_n or Bn    (pronounced B sub n) the balance after n payments have been made. After the last payment has been made, B_N is zero.)
+i    the interest rate per period, not per year
       (For instance, if the loan payments are made monthly and the interest rate is 9%, then i = 9%/12 = 0.75% = 0.0075.)
-n   	the number of time periods elapsed at any given point
-N   	the total number of payments for the entire loan or investment
-P   	the amount of each equal payment
+n    the number of time periods elapsed at any given point
+N    the total number of payments for the entire loan or investment
+P    the amount of each equal payment
 */
 
 #include <string>
@@ -53,7 +53,7 @@ public:
   /**
    * Total loan amount A
    */
-  inline void setAmount(long double A) { amount_ = A; amountSet_ = true; }
+  void setAmount(long double A);
   inline long double getAmount() const { return amount_; }
 
   /**
@@ -66,17 +66,17 @@ public:
    * Yearly interest rate i as in 6.75
    * Internally .0675/12 will be used
    * If 6.75 is passed to setInterest()
-   *    getInterest() will return 6.75
-   *    getPeriodicInterest() will return .0675/12.0
+   * getInterest() will return 6.75
+   * getPeriodicInterest() will return .0675/12.0
    */
-  void setInterest(long double i) { interest_ = i; interestPeriodic_ = i/100.0/12.0; interestSet_ = true; }
+  void setInterest(long double i);
   inline long double getInterest() const         { return interest_; }
   inline long double getPeriodicInterest() const { return interestPeriodic_; }
 
   void setPayment(long double P)        { payment_ = P; paymentSet_ = true; }
   inline long double getPayment() const { return payment_; }
 
-  void setPeriodTotal(int N)        { periodTotal_ = N; periodTotalSet_ = true; }
+  void setPeriodTotal(int N);
   inline int getPeriodTotal() const { return periodTotal_; }
 
   void setPeriodElapsed(int n)         { periodElapsed_ = n; periodElapsedSet_ = true; }

@@ -1,12 +1,41 @@
 #include <iostream>
 #include <string>
-#include <cstdlib> 
+#include <cstdlib>
 #include "Loan.h"
+#include <fstream>
+
 
 /**
  * @brief Removed GUI Library and made the App completely console-based
  */
 using namespace std;
+
+void readConfig(long double &amount, long double &rate, int &months) {
+    std::ifstream file("config.txt");
+
+    if (!file.is_open()) {
+        std::cout << "config.txt not found. Using defaults.\n";
+        return;
+    }
+
+    std::string name;
+    std::string value;
+
+    // Each line should look like:  Name=Value
+    while (std::getline(file, name, '=') && std::getline(file, value)) {
+        if (name == "Amount") {
+            amount = std::stold(value);
+        }
+        else if (name == "Interest") {
+            rate = std::stold(value);
+        }
+        else if (name == "Years") {
+            months = std::stoi(value) * 12;
+        }
+    }
+
+    std::cout << "Configuration loaded.\n";
+}
 
 int main(int argc, char* argv[]) {
     // 1. Create the object

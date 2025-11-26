@@ -1,53 +1,132 @@
-A simple loan calculator written in C++ using a Qt GUI.
+Legacy Loan Calculator (Refactored 2009)
 
-Can be compiled with either make or SCons as follows:
-# make
--- OR --
-# scons
+📌 Project Overview
 
-The following can be calculated given the correct inputs:
-- Monthly Payment
-- Amount
-- Interest
-- Number of payments
-- Balance
+This project is a refactored and modernized version of a legacy C++ Loan/EMI Calculator. The original codebase suffered from "spaghetti code" (all logic in one file), potential integer overflows, lack of validation, and hardcoded values.
 
-Inputs are the following and should be supplied depending on the aforementioned calculation type:
-- Amount
-- Initial Payment
-- Loan Fee %
-- Interest %
-- Payment
-- Months
+This version introduces:
 
-Usage:
-Input values:
-   -N Set the total loan period in months. Ej: 60
-   -a Set the initial amount. Ej: 19300
-   -ai Set the initial payment, loan will be for (initial amount - initial
-       payment) Ej: 1000, Default 0.0
-   -ca Calculate the initial loan amount, given: monthly payment, loan period,
-       and interest
-   -cb Calculate the loan balance after making several payments, given:
-       loan amount, interest, monthly payment and number of
-       monthly payments made so far
-   -ci Calculate the loan interest, given: loan amount, loan period,
-       and monthly payment
-   -cn Calculate the number of payments needed to pay a loan, given:
-       loan amount, monthly payment, interest
-   -cp Calculate the monthly loan payment, given: loan amount, loan period,
-       and interest
-   -i Set the yearly interest rate. Ej: 6.75
-   -n Set the elapsed period in months. Ej: 32
-   -of Set fees for opening the loan. Ej: 100, Default 0.0
-   -op Set fees for opening the loan, charged as a percentage.
-       Ej: 2.75%, Default 0.0%
-   -p Set the monthly loan payment. Ej: 325.67
+Modular Architecture: Split into header (.h), source (.cpp), and driver (main.cpp) files.
 
-Calculations: Mutually Exclusive options, one and only one can be set:
-  -cb -cp -cn -ca -ci 
+Robust Math: Upgraded to long double to handle large loan amounts without overflow.
 
-Use one of the following options to display this message:
-   -h -help --h --help -?
+Input Validation: strict checks to prevent negative interest rates or loan amounts.
 
-With no options set, a GUI will be launched
+Configurability: Reads default values from config.txt to avoid recompilation for simple changes.
+
+Quality Assurance: Includes GoogleTest unit tests and Doxygen documentation.
+
+📂 Project Structure
+
+legacy-calc-2009/
+├── src/                # Source code (Loan.cpp, Loan.h, main.cpp)
+├── test/               # Unit tests (test_emi.cpp)
+├── lib/                # External libraries (GoogleTest)
+├── docs/               # Documentation (Doxygen output)
+├── config.txt          # Configuration file for default values
+├── Doxyfile            # Doxygen configuration
+└── README.md           # This file
+
+
+ Build & Run Instructions
+
+Prerequisites
+
+G++ Compiler (Supporting C++11 standard)
+
+Git
+
+1. Building the Calculator
+
+Navigate to the project root and run the compiler:
+
+g++ -std=c++11 src/main.cpp src/Loan.cpp -o calc
+
+
+2. Running the Application
+
+You can run the calculator in two modes:
+
+Mode A: Command Line Arguments
+Override defaults by passing flags directly.
+
+-a: Amount (Principal)
+
+-i: Interest Rate (Annual %)
+
+-n: Number of Months
+
+./calc -a 100000 -i 5.5 -n 360
+
+
+Mode B: Configuration Mode
+Run without arguments to load values from config.txt:
+
+./calc
+
+
+(Edit config.txt to change default values).
+
+🧪 Unit Testing (GoogleTest)
+
+This project uses GoogleTest to verify logic stability. The library is included locally in the lib/ folder to ensure portability.
+
+Compile Tests
+
+Use the following command to link the local GoogleTest library (v1.12.1) with the source code:
+
+g++ -std=c++11 \
+    -isystem lib/googletest/googletest/include \
+    -isystem lib/googletest/googlemock/include \
+    -I lib/googletest/googletest \
+    -pthread \
+    src/Loan.cpp \
+    test/test_emi.cpp \
+    lib/googletest/googletest/src/gtest-all.cc \
+    -o runTests
+
+
+Run Tests
+
+Execute the test runner to validate all scenarios (Standard EMI, Negative Input Handling, Large Tenure):
+
+./runTests
+
+
+Expected Output:
+
+[==========] Running 3 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 3 tests from LoanTest
+[ RUN      ] LoanTest.CalculatesStandardEMI
+[       OK ] LoanTest.CalculatesStandardEMI (0 ms)
+[ RUN      ] LoanTest.HandlesNegativeInput
+[       OK ] LoanTest.HandlesNegativeInput (0 ms)
+[ RUN      ] LoanTest.HandlesLargeTenure
+[       OK ] LoanTest.HandlesLargeTenure (0 ms)
+[----------] 3 tests from LoanTest (0 ms total)
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 3 tests.
+
+
+📚 Documentation
+
+The code is fully documented using Doxygen style comments.
+
+To generate HTML documentation:
+
+Ensure Doxygen is installed.
+
+Run the generation command:
+
+doxygen Doxyfile
+
+
+Open docs/html/index.html in your browser to view the API reference.
+
+ Contributors
+
+[GHULAM MUHAMMAD ] - Architecture, Refactoring, Config Loader
+
+[GHILMAN SHAD] - Math Logic, GoogleTest Implementation
